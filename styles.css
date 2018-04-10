@@ -1,0 +1,110 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+.container{
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    border: lightblue ridge 1px;
+    background: lightblue;
+    padding-bottom: 15px;
+    border-radius: 25px;
+}
+  
+  @media (min-width: 576px) {
+    .container {
+      max-width: 540px;
+      border-radius: 25px;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .container {
+      max-width: 720px;
+      border-radius: 25px;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .container {
+      max-width: 960px;
+      border-radius: 25px;
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    .container {
+      max-width: 1140px;
+      border-radius: 25px;
+    }
+  }
+
+.display{
+    background: white;
+    height: 60px;
+    width: 50%;
+    margin: 15px auto;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.display > h1{
+    display: inline-block;
+    width: 50%
+}
+
+.display span{
+    display:inline-block;
+    width: 50%
+}
+
+.calculator{
+    display: grid;
+    grid-template-columns: 40px 40px 40px 40px;
+    grid-template-rows: 40px 40px 40px 40px;
+    justify-content: center;
+    grid-column-gap: 5px;
+    grid-row-gap: 25px;
+    padding-bottom: 25px;
+}
+
+.equals{
+    grid-column: 3;
+    grid-row: 4;
+}
+
+.divide{
+    grid-column: 4;
+}
+
+.zero{
+    grid-column: 2;
+}
+
+.clear{
+    grid-column: 1;
+    grid-row: 4;
+}
+
+button{
+    font-size: 1.5rem;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+h1{
+    font-size: 35px;
+    text-align: right;
+}
+
+.aboutToOperate{
+    opacity: .5;
+}
+
+
