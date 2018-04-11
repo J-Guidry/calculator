@@ -9,7 +9,7 @@ const dataAndOperations = {
         this.operator = operator;
     },
     performOperation: function(){
-        if(this.dataNextNumber){
+        if(this.dataNextNumber || this.dataNextNumber === 0){
             const operator = this.operator;
             if(operator === "+"){
                 let result = this.dataNumber + this.dataNextNumber;
@@ -27,10 +27,17 @@ const dataAndOperations = {
                 this.clear();
                 return result;
             } else if(operator === "÷" || operator === "/"){
-                let result =  this.dataNumber / this.dataNextNumber;
-                dataAndOperations.result = result;
-                this.clear();
-                return result;
+                if(dataAndOperations.dataNextNumber === 0){
+                    let result = "Cannot Divide by Zero";
+                    dataAndOperations.result = result;
+                    this.clear();
+                    console.log("dividing by zero");
+                } else {
+                    let result =  this.dataNumber / this.dataNextNumber;
+                    dataAndOperations.result = result;
+                    this.clear();
+                }
+
             }
         }
     },
@@ -144,21 +151,21 @@ const controller = {
             if(!dataAndOperations.dataNumber || !dataAndOperations.operator){
                 let parsedNumber = parseInt(displayedNumber);
                 dataAndOperations.setNumber(parsedNumber);
-            } else {
+            } else if(dataAndOperations.dataNumber || dataAndOperations.dataNumber !== 0){
                 let parsedNumber = parseInt(displayedNumber);
                 dataAndOperations.setNextNumber(parsedNumber);
             }              
         } else {
             const displayedNumber = UI.displayNumber(event);
-            if(!dataAndOperations.dataNumber || !dataAndOperations.operator){
+            if((!dataAndOperations.dataNumber && dataAndOperations.dataNumber !== 0) || !dataAndOperations.operator){
+
                 let parsedNumber = parseInt(displayedNumber);
                 dataAndOperations.setNumber(parsedNumber);
-            } else {
+            } else if(dataAndOperations.dataNumber || dataAndOperations.dataNumber === 0) {
                 let parsedNumber = parseInt(displayedNumber);
                 dataAndOperations.setNextNumber(parsedNumber);
             }  
         }
-           
     },
     selectOperator: function(event){
         if(typeof event !== "string"){
@@ -175,7 +182,8 @@ const controller = {
             dataAndOperations.setNumber(0);
             UI.displayOperator(operator);
             dataAndOperations.setOperator(operator);
-        } else if(!dataAndOperations.result && dataAndOperations.dataNumber && !dataAndOperations.dataNextNumber){
+        } 
+         else if(!dataAndOperations.result && (dataAndOperations.dataNumber || dataAndOperations.dataNumber === 0) && !dataAndOperations.dataNextNumber){
             console.log("normal condition: set operator after first number is chosen");
             UI.displayOperator(operator);
             dataAndOperations.setOperator(operator);
@@ -194,7 +202,7 @@ const controller = {
             controller.calculate();
             dataAndOperations.setOperator(operator);
             UI.displayOperator(operator);
-        } else if(dataAndOperations.result && dataAndOperations.dataNumber && !dataAndOperations.dataNextNumber){
+        } else if(dataAndOperations.result && (dataAndOperations.dataNumber || dataAndOperations.dataNumber === 0) && !dataAndOperations.dataNextNumber){
             console.log("result exists but second number is empty, 1st exists");
             UI.displayOperator(operator);
             dataAndOperations.setNextNumber(dataAndOperations.result);
@@ -202,7 +210,7 @@ const controller = {
             controller.calculate();
             dataAndOperations.setOperator(operator);
             UI.displayOperator(operator);
-        } else if(dataAndOperations.dataNumber && dataAndOperations.dataNextNumber){
+        } else if((dataAndOperations.dataNumber || dataAndOperations.dataNumber === 0) && dataAndOperations.dataNextNumber){
             console.log("both numbers are selected and another operator is chosen.")
             UI.displayOperator(operator);
             controller.calculate();
@@ -211,15 +219,17 @@ const controller = {
         }
     },
     calculate: function(){
-        if(dataAndOperations.dataNumber && dataAndOperations.dataNextNumber && dataAndOperations.operator){
-            let result = dataAndOperations.performOperation();
-            UI.calculate(result);
+        if((dataAndOperations.dataNumber || dataAndOperations.dataNumber === 0)&& 
+        (dataAndOperations.dataNextNumber || dataAndOperations.dataNextNumber === 0)
+        && dataAndOperations.operator){
+            dataAndOperations.performOperation();
+            UI.calculate(dataAndOperations.result);
         } else if(dataAndOperations.result && dataAndOperations.dataNumber && !dataAndOperations.dataNextNumber){
            //result exists but second number is empty, 1st exists
             dataAndOperations.setNextNumber(dataAndOperations.result);
             dataAndOperations.result = "";
-            let result = dataAndOperations.performOperation();
-            UI.calculate(result);
+            dataAndOperations.performOperation();
+            UI.calculate(dataAndOperations.result);
         }
     },
     clear: function(){
